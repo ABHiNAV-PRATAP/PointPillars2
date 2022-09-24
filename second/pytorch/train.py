@@ -618,6 +618,7 @@ def train(config_path,
                                                 net.get_global_step())
         
                     if eval_name:
+                        print(eval_name)
                         model_logging.log_text("#################################",
                                             global_step)
                         model_logging.log_text("# EVAL", global_step)
@@ -746,9 +747,10 @@ def evaluate(config_path,
 
     if ckpt_path is None:
         assert model_dir is not None
-        torchplus.train.try_restore_latest_checkpoints(model_dir, [net])
+        torchplus.train.try_restore_latest_checkpoints(model_dir, [net], device)
     else:
-        torchplus.train.restore(ckpt_path, net)
+        torchplus.train.restore(ckpt_path, net, device)
+
     batch_size = batch_size or input_cfg.batch_size
     eval_dataset = input_reader_builder.build(
         input_cfg,

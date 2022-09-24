@@ -66,6 +66,7 @@ class SimpleModelLog:
         if log_mjson_file_path.exists():
             with open(log_mjson_file_path, 'r') as f:
                 for line in f.readlines():
+                    # print(line)
                     self.metrics.append(json.loads(line))
         log_file_path = model_dir / f'log.txt'
         self.log_mjson_file = open(log_mjson_file_path, 'a')
@@ -88,7 +89,7 @@ class SimpleModelLog:
         """This function only add text to log.txt and tensorboard texts
         """
         print(text)
-        print(text, file=self.log_file)
+        print(text, file=self.log_file, flush=True)
         if step > self._text_current_gstep and self._text_current_gstep != -1:
             total_text = '\n'.join(self._tb_texts)
             self.summary_writter.add_text(tag, total_text, global_step=step)
@@ -98,6 +99,7 @@ class SimpleModelLog:
             self._tb_texts.append(text)
         if self._text_current_gstep == -1:
             self._text_current_gstep = step
+        self.summary_writter.flush()
 
 
     def log_metrics(self, metrics: dict, step):
@@ -115,6 +117,7 @@ class SimpleModelLog:
                 self.summary_writter.add_scalar(k, v, step)
         log_str = metric_to_str(metrics)
         print(log_str)
-        print(log_str, file=self.log_file)
-        print(json.dumps(metrics), file=self.log_mjson_file)
+        print(log_str, file=self.log_file, flush=True)
+        print(json.dumps(metrics), file=self.log_mjson_file, flush=True)
+        self.summary_writter.flush()
 

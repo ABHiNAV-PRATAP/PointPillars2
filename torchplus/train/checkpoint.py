@@ -114,9 +114,12 @@ def save(model_dir,
 def restore(ckpt_path, model, map_func=None):
     if not Path(ckpt_path).is_file():
         raise ValueError("checkpoint {} not exist.".format(ckpt_path))
-    state_dict = torch.load(ckpt_path)
+
     if map_func is not None:
-        map_func(state_dict)
+        state_dict = torch.load(ckpt_path, map_func)
+        # map_func(state_dict)
+    else:
+        state_dict = torch.load(ckpt_path)
     model.load_state_dict(state_dict)
     print("Restoring parameters from {}".format(ckpt_path))
 

@@ -46,8 +46,8 @@ class PillarFeatureNet2_MSG(nn.Module):
         self._with_distance = with_distance
 
         #Defining the setabstraction layer and feature propogation layer
-        self.sa0 = PointNetSetAbstractionMsg(10, [0.35, 0.55, 0.85], [5, 7, 9], 0, [[16, 32, 64], [32, 32, 64], [32, 64, 128]]) 
-        self.sa1 = PointNetSetAbstraction(None, None, None, 64+64+128 + 3, [256, 256, 128], True)
+        self.sa0 = PointNetSetAbstractionMsg(10, [0.32, 0.36, 0.4], [5, 7, 9], 0, [[16, 32, 48, 64], [32, 32, 48, 64], [32, 64, 96, 128]])   
+        self.sa1 = PointNetSetAbstraction(None, None, None, 64+64+128 + 3, [512, 256, 128], True)
 
         # Need pillar (voxel) size and x/y offset in order to calculate pillar offset
         self.vx = voxel_size[0]
